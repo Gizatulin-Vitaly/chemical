@@ -30,6 +30,7 @@ class HomeFragment : Fragment() {
     ): View {
 
         fun openGunAnimate() {
+
             // Получаем ссылки на нужные элементы из разметки
             val groupChangeVoltage = binding.changeVoltageLayout.groupChangeVoltage
             val voltageShevron = binding.changeVoltageLayout.voltageShevron
@@ -39,11 +40,14 @@ class HomeFragment : Fragment() {
 
             // Получаем родительский контейнер и устанавливаем длительность анимации
             val container1 = groupChangeVoltage.parent as View
+            val resources = resources
+            val displayMetrics = resources.displayMetrics
+            val density = displayMetrics.density
             val duration = 500L
 
             if (groupChangeVoltage.visibility == View.VISIBLE) {
                 voltageShevron.startAnimation(rotateCloseAnim)
-                val anim = ValueAnimator.ofInt(container1.height, 100)
+                val anim = ValueAnimator.ofInt(container1.height, (130/ density).toInt())
                 anim.duration = duration
                 anim.addUpdateListener { valueAnimator ->
                     val value =
@@ -61,7 +65,7 @@ class HomeFragment : Fragment() {
             } else {
                 voltageShevron.startAnimation(rotateOpenAnim)
                 container1.post {
-                    val anim = ValueAnimator.ofInt(100, 400)
+                    val anim = ValueAnimator.ofInt((130/ density).toInt(), (550/ density).toInt())
                     anim.duration = duration
                     anim.addUpdateListener { valueAnimator ->
                         val value =
