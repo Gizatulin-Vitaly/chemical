@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Chemical Analisys</string>
+    <string name="title_home">Конвертор</string>
+    <string name="title_dashboard">АЖК</string>
+    <string name="title_notifications">Разработка</string>
+    <string name="calculate">Расчитать</string>
+
+    <string name="voltage_output_text">Токовый выход:</string>
+    <string name="voltage_output"><font color='#FF5722'>Вторая надпись</font></string>
+    <string name="voltage_0_5_ma">0 – 5 mA</string>
+    <string name="voltage_4_20_ma">4 – 20 mA</string>
+    <string name="VitalyGizatulin">Автор: Гизатулин Виталий</string>
+    <string name="openList">Нажмите что бы раскрыть список</string>
+
+</resources>

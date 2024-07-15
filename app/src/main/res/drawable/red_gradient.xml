@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Фон круга -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#FFFFFF"/>
+        </shape>
+    </item>
+
+    <!-- Градиент (опционально) -->
+    <item>
+        <shape android:shape="oval">
+            <gradient
+                android:startColor="#FF0000"
+                android:endColor="#FFF000"
+                android:type="linear"
+                android:angle="90"/>
+        </shape>
+    </item>
+
+    <!-- Ваше изображение -->
+    <item
+        android:drawable="@drawable/electric_bolt"
+        android:gravity="center"
+        />
+
+</layer-list>

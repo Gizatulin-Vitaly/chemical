@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/material_card"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardSensor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        app:cardBackgroundColor="@color/my_violet"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="18dp">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/titleScaleSensor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Шкала датчика"
+                android:textColor="@color/durty_white"
+                android:textSize="18sp"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputStartSensor"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColorHint="@color/durty_white"
+                app:boxStrokeColor="@color/durty_white"
+                app:cursorColor="@color/durty_white"
+                app:hintTextColor="@color/durty_white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/titleScaleSensor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputStartSensorText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Начало шкалы"
+                    android:drawableEnd="@drawable/up"
+                    android:inputType="number"
+                    android:textColor="@color/durty_white" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputEndSensor"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColorHint="@color/durty_white"
+                app:boxStrokeColor="@color/durty_white"
+                app:cursorColor="@color/durty_white"
+                app:hintTextColor="@color/durty_white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constrainedHeight="true"
+                app:layout_constraintTop_toBottomOf="@id/inputStartSensor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputEndSensorText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constrainedHeight="true"
+                    android:drawableEnd="@drawable/finish"
+                    android:hint="Конец шкалы"
+                    android:inputType="number"
+                    android:textColor="@color/durty_white" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/electro_constraint"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="5dp"
+
+                app:layout_constraintEnd_toStartOf="@id/scale_constrain"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/inputEndSensor"
+                app:layout_constraintWidth_percent=".5">
+
+                <ImageView
+                    android:id="@+id/electric_bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/electric_bolt"
+                    app:layout_constraintEnd_toEndOf="@id/electric_bold_text"
+                    app:layout_constraintStart_toStartOf="@id/electric_bold_text"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@drawable/selected_text_color"
+                    android:contentDescription="Узнать токовый выход" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/electric_bold_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="токовый выход"
+                    android:textColor="@drawable/selected_text_color"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/electric_bold" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/scale_constrain"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/electro_constraint"
+                app:layout_constraintTop_toTopOf="@id/electro_constraint"
+                app:layout_constraintWidth_percent=".5">
+
+                <ImageView
+                    android:id="@+id/scale_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/speed"
+                    app:layout_constraintEnd_toEndOf="@id/scale_text"
+                    app:layout_constraintStart_toStartOf="@id/scale_text"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@drawable/selected_text_color"
+                    android:contentDescription="Узнать показания датчика" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/scale_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="показания датчика"
+                    android:gravity="center"
+                    android:textColor="@drawable/selected_text_color"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/scale_image" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <Space
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardSensor"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
