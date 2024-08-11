@@ -51,8 +51,8 @@
                     android:id="@+id/inputStartSensorText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Начало шкалы"
                     android:drawableEnd="@drawable/up"
+                    android:hint="Начало шкалы"
                     android:inputType="number"
                     android:textColor="@color/durty_white" />
             </com.google.android.material.textfield.TextInputLayout>

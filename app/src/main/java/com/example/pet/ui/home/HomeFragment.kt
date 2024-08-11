@@ -15,6 +15,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.example.pet.ui.home.HomeViewModel
+import android.content.Context
+import android.util.TypedValue
+
 
 class HomeFragment : Fragment() {
 
@@ -28,57 +31,43 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         fun openGunAnimate() {
 
             // Получаем ссылки на нужные элементы из разметки
             val groupChangeVoltage = binding.changeVoltageLayout.groupChangeVoltage
             val voltageShevron = binding.changeVoltageLayout.voltageShevron
-            val rotateOpenAnim = AnimationUtils.loadAnimation(context, R.anim.rotate_open)
-            val rotateCloseAnim = AnimationUtils.loadAnimation(context, R.anim.rotate_close)
-
-
-            // Получаем родительский контейнер и устанавливаем длительность анимации
             val container1 = groupChangeVoltage.parent as View
-            val resources = resources
-            val displayMetrics = resources.displayMetrics
-            val density = displayMetrics.density
             val duration = 500L
 
-            if (groupChangeVoltage.visibility == View.VISIBLE) {
-                voltageShevron.startAnimation(rotateCloseAnim)
-                val anim = ValueAnimator.ofInt(container1.height, (130/ density).toInt())
-                anim.duration = duration
-                anim.addUpdateListener { valueAnimator ->
-                    val value =
-                        valueAnimator.animatedValue as Int
-                    val layoutParams = container1.layoutParams
-                    layoutParams.height = value
-                    container1.layoutParams = layoutParams
+            // Подготавливаем анимации шеврона
+            val rotateAnim = if (groupChangeVoltage.visibility == View.VISIBLE) {
+                AnimationUtils.loadAnimation(context, R.anim.rotate_close)
+            } else {
+                AnimationUtils.loadAnimation(context, R.anim.rotate_open)
+            }
+
+            val startHeight = if (groupChangeVoltage.visibility == View.VISIBLE) container1.height else 0
+            val endHeight = if (groupChangeVoltage.visibility == View.VISIBLE) 0 else groupChangeVoltage.measuredHeight
+
+            // Запускаем анимацию вращения и изменение размера контейнера
+            voltageShevron.startAnimation(rotateAnim)
+
+            ValueAnimator.ofInt(startHeight, endHeight).apply {
+                this.duration = duration
+                addUpdateListener { valueAnimator ->
+                    groupChangeVoltage.layoutParams.height = valueAnimator.animatedValue as Int
+                    groupChangeVoltage.requestLayout() // Обновляем layout после изменения размеров
                 }
-                anim.addListener(object : AnimatorListenerAdapter() {
+                addListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator) {
-                        groupChangeVoltage.visibility = View.GONE
+                        groupChangeVoltage.visibility = if (groupChangeVoltage.visibility == View.VISIBLE) View.GONE else View.VISIBLE
                     }
                 })
-                anim.start()
-            } else {
-                voltageShevron.startAnimation(rotateOpenAnim)
-                container1.post {
-                    val anim = ValueAnimator.ofInt((130/ density).toInt(), (550/ density).toInt())
-                    anim.duration = duration
-                    anim.addUpdateListener { valueAnimator ->
-                        val value =
-                            valueAnimator.animatedValue as Int
-                        val layoutParams = container1.layoutParams
-                        layoutParams.height = value
-                        container1.layoutParams = layoutParams
-                        groupChangeVoltage.visibility = View.VISIBLE
-                    }
-                    anim.start()
-                }
+                start()
             }
         }
+
+
 
         val homeViewModel =
             ViewModelProvider(this)[HomeViewModel::class.java]
@@ -152,50 +141,38 @@ class HomeFragment : Fragment() {
         }
 
         binding.resultButton.setOnClickListener {
-
-//            Получаем Вводимые значения
+            // Получаем Вводимые значения
             val userValueText = binding.inputUsersText.text.toString().trim()
-            val startScaleSensText =
-                binding.inputMaterialCard.inputStartSensorText.text.toString().trim()
-            val endScaleSensText =
-                binding.inputMaterialCard.inputEndSensorText.text.toString().trim()
+            val startScaleSensText = binding.inputMaterialCard.inputStartSensorText.text.toString().trim()
+            val endScaleSensText = binding.inputMaterialCard.inputEndSensorText.text.toString().trim()
+            val inputInaccuracyText = binding.inaccuracyLayout2.inaccurancyInputText.text.toString().trim()
 
-//            Проверяем на пустоту
+            // Проверяем на пустоту
             if (userValueText.isEmpty()) {
-                val colorStateList =
-                    ContextCompat.getColorStateList(requireContext(), R.color.coral)
+                val colorStateList = ContextCompat.getColorStateList(requireContext(), R.color.coral)
                 binding.inputUsers.setBoxStrokeErrorColor(colorStateList)
                 binding.inputUsers.error = "Заполните это поле"
             } else {
-                val defaultColorStateList =
-                    ResourcesCompat.getColorStateList(resources, R.color.durty_white, null)
+                val defaultColorStateList = ResourcesCompat.getColorStateList(resources, R.color.durty_white, null)
                 binding.inputUsers.setBoxStrokeErrorColor(defaultColorStateList)
                 binding.inputUsers.error = null
             }
 
             if (startScaleSensText.isEmpty()) {
-                binding.inputMaterialCard.inputStartSensor.boxStrokeErrorColor =
-                    ContextCompat.getColorStateList(requireContext(), R.color.coral)
+                binding.inputMaterialCard.inputStartSensor.boxStrokeErrorColor = ContextCompat.getColorStateList(requireContext(), R.color.coral)
                 binding.inputMaterialCard.inputStartSensor.error = "Заполните это поле"
             } else {
                 binding.inputMaterialCard.inputStartSensor.boxStrokeErrorColor = null
                 binding.inputMaterialCard.inputStartSensor.error = null
-                binding.inputMaterialCard.inputStartSensor.layoutParams.height =
-                    ConstraintLayout.LayoutParams.WRAP_CONTENT
             }
 
-
             if (endScaleSensText.isEmpty()) {
-                binding.inputMaterialCard.inputEndSensor.boxStrokeErrorColor =
-                    ContextCompat.getColorStateList(requireContext(), R.color.coral)
+                binding.inputMaterialCard.inputEndSensor.boxStrokeErrorColor = ContextCompat.getColorStateList(requireContext(), R.color.coral)
                 binding.inputMaterialCard.inputEndSensor.error = "Заполните это поле"
             } else {
                 binding.inputMaterialCard.inputEndSensor.boxStrokeErrorColor = null
                 binding.inputMaterialCard.inputEndSensor.error = null
-                binding.inputMaterialCard.inputEndSensor.layoutParams.height =
-                    ConstraintLayout.LayoutParams.WRAP_CONTENT
             }
-
 
             val userValue = userValueText.toFloatOrNull() ?: 0f
             val startScaleSens = startScaleSensText.toIntOrNull() ?: 0
@@ -203,8 +180,7 @@ class HomeFragment : Fragment() {
 
             fun elecron(min: Int, max: Int): String {
                 return if (endScaleSens - startScaleSens != 0) {
-                    val result =
-                        ((userValue - startScaleSens) * (max - min)) / (endScaleSens - startScaleSens) + min
+                    val result = ((userValue - startScaleSens) * (max - min)) / (endScaleSens - startScaleSens) + min
                     result.toString()
                 } else {
                     "Деление на ноль"
@@ -213,15 +189,14 @@ class HomeFragment : Fragment() {
 
             fun sensor(min: Int, max: Int): String {
                 return if (max - min != 0) {
-                    val result =
-                        ((userValue - min) * (endScaleSens - startScaleSens)) / (max - min) + startScaleSens
+                    val result = ((userValue - min) * (endScaleSens - startScaleSens)) / (max - min) + startScaleSens
                     result.toString()
                 } else {
                     "Деление на ноль"
                 }
             }
 
-            val resultTextView: String = if (defoltCaltulate == 1) {
+            val resultTextView = if (defoltCaltulate == 1) {
                 if (defoltVoltage == 0) {
                     sensor(0, 5)
                 } else {
@@ -235,26 +210,25 @@ class HomeFragment : Fragment() {
                 }
             }
 
-
-
             if (startScaleSensText.isEmpty() || endScaleSensText.isEmpty() || userValueText.isEmpty()) {
-                binding.resultTextView.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.coral
-                    )
-                )
+                binding.resultTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.coral))
                 binding.resultTextView.text = "Остались пустые значения"
+                binding.resultTextView.textSize = 32f
             } else {
-                binding.resultTextView.text = String.format("%.3f", resultTextView.toDouble())
-                binding.resultTextView.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.durty_white
-                    )
-                )
+                val resultDouble = resultTextView.toDoubleOrNull()
+                if (resultDouble != null) {
+                    binding.resultTextView.text = String.format("%.3f", resultDouble)
+                } else {
+                    binding.resultTextView.text = "Ошибка в расчете"
+                }
+                binding.resultTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.durty_white))
+
+                val inaccuracy = inputInaccuracyText.toFloatOrNull() ?: 0f
+                val calculatedInaccuracy = (((endScaleSensText.toFloat() - startScaleSensText.toFloat()))*(inaccuracy/100))
+                binding.inaccuracyLayout2.inaccurancyResult.text = String.format("%.2f", calculatedInaccuracy)
             }
         }
+
         return root
     }
 
